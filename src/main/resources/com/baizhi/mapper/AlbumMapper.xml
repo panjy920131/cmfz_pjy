@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.AlbumDao">
+   <!-- <select id="queryByPage" resultType="com.baizhi.entity.Album">
+          select id,title,publishDate,counts,coverImg,star,author,broadCast,brief from Album limit #{start},#{rows}
+    </select>-->
+    <resultMap id="s1" type="com.baizhi.entity.Album">
+        <id property="id" column="a_id"/>
+        <result property="title" column="a_title"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="counts" column="a_counts"/>
+        <result property="coverImg" column="coverImg"/>
+        <result property="star" column="star"/>
+        <result property="author" column="author"/>
+        <result property="broadCast" column="broadCast"/>
+        <result property="brief" column="brief"/>
+        <collection property="children" ofType="com.baizhi.entity.Chapter">
+            <id property="id" column="c_id"/>
+            <result property="title" column="c_title"/>
+            <result property="size" column="c_size"/>
+            <result property="duration" column="duration"/>
+            <result property="downPath" column="downPath"/>
+            <result property="uploadTime" column="uploadTime"/>
+            <result property="album_id" column="album_id"/>
+        </collection>
+    </resultMap>
+    <select id="queryAll" resultMap="s1">
+          select a.id a_id, a.title a_title,
+                 a.publishDate publishDate,
+                 a.counts a_counts, a.coverImg coverImg,
+                 a.star star, a.author author,
+                 a.broadCast broadCast, a.brief brief,
+                 c.id c_id,c.title c_title,c.size c_size,
+                 c.duration duration,c.downPath downPath,c.uploadTime uploadTime,c.album_id album_id
+          from album a
+          inner join chapter c
+          on a.id=c.album_id
+    </select>
+    <select id="queryTotals" resultType="long">
+        select count(id) from album
+    </select>
+    <select id="queryOne" resultType="com.baizhi.entity.Album">
+        select id,title,publishDate,counts,coverImg,star,author,broadCast,brief from album
+        where id=#{id}
+    </select>
+    <insert id="insert" parameterType="com.baizhi.entity.Album">
+          insert into album values(#{id},#{title},#{publishDate},#{counts},#{coverImg},#{star},#{author},#{broadCast},#{brief})
+    </insert>
+    <delete id="delete" parameterType="com.baizhi.entity.Album">
+         delete from album
+         where id=#{id}
+    </delete>
+    <update id="update" parameterType="com.baizhi.entity.Album">
+        update album set title=#{title},publishDate=#{publishDate},counts=#{counts},coverImg=#{coverImg},star=#{star},author=#{author},broadCast=#{broadCast},brief=#{brief}
+        where id=#{id}
+    </update>
+
+    <select id="queryByName" resultType="com.baizhi.entity.Album">
+        select title,id from album
+    </select>
+</mapper>

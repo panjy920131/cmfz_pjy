@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.UserDao">
+    <select id="queryByPage" resultType="com.baizhi.entity.User">
+          select id,phoneNum,username,password,salt,province,city,nickName,sex,sign,headPic,status,joinTime
+          from user limit #{start},#{rows}
+    </select>
+    <select id="queryTotals" resultType="long">
+        select count(id) from user
+    </select>
+    <select id="queryOne" resultType="com.baizhi.entity.User">
+        select id,phoneNum,username,password,salt,province,city,nickName,sex,sign,headPic,status,joinTime
+        from user
+        where id=#{id}
+    </select>
+    <select id="queryByPhoneNum" resultType="com.baizhi.entity.User">
+        select id,phoneNum,username,password,salt,province,city,nickName,sex,sign,headPic,status,joinTime
+        from user
+        where phoneNum=#{phoneNum} and password=#{password}
+    </select>
+    <insert id="insert" parameterType="com.baizhi.entity.User">
+          insert into user values(#{id},#{phoneNum},#{username},#{password},#{salt},#{province},#{city},#{nickName},#{sex},#{sign},#{headPic},#{status},#{joinTime})
+    </insert>
+    <delete id="delete" parameterType="com.baizhi.entity.User">
+         delete from user
+         where id=#{id}
+    </delete>
+    <update id="update" parameterType="com.baizhi.entity.User">
+        update user set phoneNum=#{phoneNum},username=#{username},password=#{password},salt=#{salt},province=#{province},city=#{city},nickName=#{nickName},sex=#{sex},sign=#{sign},headPic=#{headPic},status=#{status},joinTime=#{joinTime}
+        where id=#{id}
+    </update>
+</mapper>

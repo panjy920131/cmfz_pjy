@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.GuruDao">
+    <resultMap id="s" type="com.baizhi.entity.Article">
+        <id property="id" column="c_id"/>
+        <result property="title" column="title"/>
+        <result property="imgPath" column="imgPath"/>
+        <result property="content" column="content"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="guru_id" column="guru_id"/>
+        <collection property="guru" ofType="com.baizhi.entity.Guru">
+            <result property="niname" column="niname"/>
+        </collection>
+    </resultMap>
+    <select id="queryAll" resultMap="s">
+          select a.id a_id,a.niname niname,
+                 a.headPic headPic,a.sex sex,
+                 c.id c_id,c.title title,c.imgPath imgPath,
+                 c.content content,c.publishDate publishDate,c.guru_id guru_id
+          from guru a
+          inner join article c
+          on a.id=c.guru_id
+    </select>
+    <select id="queryByName" resultType="com.baizhi.entity.Guru">
+          select id,niname from guru
+    </select>
+    <select id="queryByPage" resultType="com.baizhi.entity.Guru">
+          select id,niname,headPic,sex from guru limit #{start},#{rows}
+    </select>
+    <select id="queryTotals" resultType="long">
+        select count(id) from guru
+    </select>
+    <select id="queryOne" resultType="com.baizhi.entity.Guru">
+        select id,niname,headPic,sex from guru
+        where id=#{id}
+    </select>
+    <insert id="insert" parameterType="com.baizhi.entity.Guru">
+          insert into guru values(#{id},#{niname},#{headPic},#{sex})
+    </insert>
+    <delete id="delete" parameterType="com.baizhi.entity.Guru">
+         delete from guru
+         where id=#{id}
+    </delete>
+    <update id="update" parameterType="com.baizhi.entity.Guru">
+        update guru set niname=#{niname},headPic=#{headPic},sex=#{sex}
+        where id=#{id}
+    </update>
+</mapper>
